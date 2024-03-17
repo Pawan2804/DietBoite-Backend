@@ -1,0 +1,13 @@
+package com.DietBoite.BackendRestAPI;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class BackendRestApiApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
