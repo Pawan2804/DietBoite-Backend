@@ -1,0 +1,7 @@
+Schema 
+
+Customer
+CustomerId(PK) | CustomerName | CustomerEmail | CustomerNumber
+
+MealPlan
+MealId(PK) | CustomerId(FK) one-many | WeekNumber | DayName | MealType | Ingredients
