@@ -1,5 +1,6 @@
 package com.DietBoite.BackendRestAPI.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,7 +16,8 @@ public class CustomerModel {
     private String userName;
     private String Email;
     private String PhoneNumber;
-//    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-//    private List<MealPlanModel> mealPlans;
+    @OneToMany(mappedBy = "customer", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, orphanRemoval = true)
+    @JsonIgnore
+    private List<MealPlanModel> mealPlans;
 
 }

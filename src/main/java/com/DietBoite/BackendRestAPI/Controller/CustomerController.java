@@ -36,11 +36,11 @@ public class CustomerController {
         CustomerModel response =customerService.updateCustomerById(id,customerModel);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
-//    @DeleteMapping("/delete/{id}")
-//    public ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
-//        customerService.deleteCustomer(id);
-//        return ResponseEntity.ok().build();
-//    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
+        customerService.deleteCustomer(id);
+        return ResponseEntity.ok().build();
+    }
 
 
 }
