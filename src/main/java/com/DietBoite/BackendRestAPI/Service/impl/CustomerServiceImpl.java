@@ -2,7 +2,9 @@ package com.DietBoite.BackendRestAPI.Service.impl;
 
 import com.DietBoite.BackendRestAPI.Exception.ResourceNotFoundException;
 import com.DietBoite.BackendRestAPI.Model.CustomerModel;
+import com.DietBoite.BackendRestAPI.Model.MealPlanModel;
 import com.DietBoite.BackendRestAPI.Repository.CustomerRepo;
+import com.DietBoite.BackendRestAPI.Repository.MealPlanRepo;
 import com.DietBoite.BackendRestAPI.Service.CustomerService;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +14,11 @@ import java.util.Optional;
 @Service
 public class CustomerServiceImpl implements CustomerService {
     private CustomerRepo customerRepo;
+    private MealPlanRepo mealPlanRepo;
 
-    public CustomerServiceImpl(CustomerRepo customerRepo) {
+    public CustomerServiceImpl(CustomerRepo customerRepo, MealPlanRepo mealPlanRepo) {
         this.customerRepo = customerRepo;
+        this.mealPlanRepo = mealPlanRepo;
     }
 
     @Override
@@ -41,5 +45,14 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerModel updatedPost = customerRepo.save(customer);
         return updatedPost;
     }
+
+//    @Override
+//    public void deleteCustomer(Long id) {
+//        CustomerModel customer = customerRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("Customer","id",id));
+//        List<MealPlanModel> mealPlan = customer.getMealPlans();
+//        mealPlanRepo.deleteAll(mealPlan);
+//        customerRepo.delete(customer);
+//
+//    }
 
 }

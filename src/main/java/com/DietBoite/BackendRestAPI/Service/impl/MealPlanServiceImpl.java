@@ -8,8 +8,7 @@ import com.DietBoite.BackendRestAPI.Repository.CustomerRepo;
 import com.DietBoite.BackendRestAPI.Repository.MealPlanRepo;
 import com.DietBoite.BackendRestAPI.Service.MealPlanService;
 import org.springframework.stereotype.Service;
-
-import java.sql.SQLOutput;
+import org.springframework.web.bind.annotation.PatchMapping;
 
 @Service
 public class MealPlanServiceImpl implements MealPlanService {
@@ -38,4 +37,23 @@ public class MealPlanServiceImpl implements MealPlanService {
         MealPlanModel response = mealPlanRepo.save(mealPlanModel);
         return response;
     }
+
+    @Override
+    public MealPlanModel partialUpdate(Long id, MealPlanDto mealPlanDto) {
+        MealPlanModel meal = mealPlanRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("Meal","id",id));
+        if (mealPlanDto.getMealType()!= null) {
+            meal.setMealType(mealPlanDto.getMealType());
+        }
+        if (mealPlanDto.getWeek() != null) {
+            meal.setWeek(mealPlanDto.getWeek());
+        }
+        if (mealPlanDto.getDay() != null) {
+            meal.setDay(mealPlanDto.getDay());
+        }
+        if (mealPlanDto.getIngredients() != null) {
+            meal.setIngredients(mealPlanDto.getIngredients());
+        }
+        return mealPlanRepo.save(meal);
+    }
+
 }

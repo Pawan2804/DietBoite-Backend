@@ -3,13 +3,11 @@ package com.DietBoite.BackendRestAPI.Controller;
 import com.DietBoite.BackendRestAPI.Model.CustomerModel;
 import com.DietBoite.BackendRestAPI.Model.MealPlanModel;
 import com.DietBoite.BackendRestAPI.Payload.MealPlanDto;
+import com.DietBoite.BackendRestAPI.Service.CustomerService;
 import com.DietBoite.BackendRestAPI.Service.MealPlanService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/mealplan")
@@ -24,4 +22,10 @@ public class MealPlanController {
     public ResponseEntity<MealPlanModel> createCustomer(@RequestBody MealPlanDto mealPlanDto){
         return new ResponseEntity<>(mealPlanService.createMealPlan(mealPlanDto), HttpStatus.OK);
     }
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<MealPlanModel> partialUpdate(@PathVariable Long id,@RequestBody MealPlanDto mealPlanDto){
+        MealPlanModel updatedMeal = mealPlanService.partialUpdate(id,mealPlanDto);
+        return ResponseEntity.ok(updatedMeal);
+    }
+
 }
