@@ -47,16 +47,9 @@ public class CustomerServiceImpl implements CustomerService {
         return updatedPost;
     }
 
-//    @Override
-//    public void deleteCustomer(Long id) {
-//        CustomerModel customer = customerRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("Customer","id",id));
-//        List<MealPlanModel> mealPlan = mealPlanRepo.findAllById(Collections.singleton(customer.getUserId()));
-//        mealPlanRepo.deleteAll(mealPlan);
-//        customerRepo.delete(customer);
-//
-//    }
 public void deleteCustomer(Long id){
         customerRepo.deleteById(id);
 }
+
 
 }

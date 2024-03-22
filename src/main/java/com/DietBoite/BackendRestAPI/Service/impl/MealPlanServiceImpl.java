@@ -10,6 +10,10 @@ import com.DietBoite.BackendRestAPI.Service.MealPlanService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PatchMapping;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class MealPlanServiceImpl implements MealPlanService {
     private CustomerRepo customerRepo;
@@ -54,6 +58,35 @@ public class MealPlanServiceImpl implements MealPlanService {
             meal.setIngredients(mealPlanDto.getIngredients());
         }
         return mealPlanRepo.save(meal);
+    }
+
+    @Override
+    public Map<String, Integer> getOverallAnalytics() {
+       List<String> meals = mealPlanRepo.findIngredients();
+        Map<String, Integer> totalQuantityMap = calculateTotalQuantity(meals);
+        return totalQuantityMap;
+    }
+
+
+    public List<String> getIngredientsList() {
+        List<String> meals = mealPlanRepo.findIngredients();
+        return meals;
+    }
+    public Map<String, Integer> calculateTotalQuantity(List<String> itemList) {
+        Map<String, Integer> totalQuantityMap = new HashMap<>();
+
+        for (String item : itemList) {
+            String[] components = item.split(", ");
+            for (String component : components) {
+                String[] parts = component.split("-");
+                String itemName = parts[0].trim();
+                int quantity = Integer.parseInt(parts[1].replaceAll("[^0-9]", "").trim());
+
+                totalQuantityMap.put(itemName, totalQuantityMap.getOrDefault(itemName, 0) + quantity);
+            }
+        }
+
+        return totalQuantityMap;
     }
 
 }

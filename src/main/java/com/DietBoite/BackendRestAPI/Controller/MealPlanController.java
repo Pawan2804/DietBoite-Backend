@@ -9,6 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/api/mealplan")
 public class MealPlanController {
@@ -27,5 +31,14 @@ public class MealPlanController {
         MealPlanModel updatedMeal = mealPlanService.partialUpdate(id,mealPlanDto);
         return ResponseEntity.ok(updatedMeal);
     }
+    @GetMapping("/getAnalytics")
+    public Map<String, Integer> getOverallAnalytics(){
+        return mealPlanService.getOverallAnalytics();
+    }
+    @GetMapping("/getIngredients")
+    public List<String> getIngredientList(){
+        return mealPlanService.getIngredientsList();
+    }
+
 
 }
