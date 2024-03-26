@@ -43,17 +43,12 @@ public class MealPlanServiceImpl implements MealPlanService {
     }
 
     @Override
-    public MealPlanModel partialUpdate(Long id, MealPlanDto mealPlanDto) {
-        MealPlanModel meal = mealPlanRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("Meal","id",id));
-        if (mealPlanDto.getMealType()!= null) {
-            meal.setMealType(mealPlanDto.getMealType());
-        }
-        if (mealPlanDto.getWeek() != null) {
-            meal.setWeek(mealPlanDto.getWeek());
-        }
-        if (mealPlanDto.getDay() != null) {
-            meal.setDay(mealPlanDto.getDay());
-        }
+    public MealPlanModel partialUpdate(MealPlanDto mealPlanDto, Long customerId, String week,String day, String mealType) {
+        MealPlanModel existingMealPlan = mealPlanRepo.findByCustomerPlan(
+                customerId, week, day, mealType);
+        MealPlanModel meal = mealPlanRepo.findByCustomerPlan(customerId,week, day,mealType);
+//        MealPlanModel meal = mealPlanRepo.findByCustomerPlan(1L,'Week4', 'Friday','Lunch');
+        System.out.println("ingredients"+meal.getIngredients());
         if (mealPlanDto.getIngredients() != null) {
             meal.setIngredients(mealPlanDto.getIngredients());
         }
@@ -67,12 +62,26 @@ public class MealPlanServiceImpl implements MealPlanService {
         return totalQuantityMap;
     }
 
+    @Override
+    public Map<String, Integer> getWeeklyAnalytics(String week) {
+        List<String> res = mealPlanRepo.findWeeklyIngredients(week);
+        Map<String, Integer> totalQuantityMap = calculateTotalQuantity(res);
+        return totalQuantityMap;
+    }
+
+    @Override
+    public Map<String, Integer> getDailyAnalytics(String day) {
+        List<String> res = mealPlanRepo.findDailyIngredients(day);
+        Map<String, Integer> totalQuantityMap = calculateTotalQuantity(res);
+        return totalQuantityMap;
+    }
+
 
     public List<String> getIngredientsList() {
         List<String> meals = mealPlanRepo.findIngredients();
         return meals;
     }
-    public Map<String, Integer> calculateTotalQuantity(List<String> itemList) {
+    private Map<String, Integer> calculateTotalQuantity(List<String> itemList) {
         Map<String, Integer> totalQuantityMap = new HashMap<>();
 
         for (String item : itemList) {

@@ -26,14 +26,25 @@ public class MealPlanController {
     public ResponseEntity<MealPlanModel> createCustomer(@RequestBody MealPlanDto mealPlanDto){
         return new ResponseEntity<>(mealPlanService.createMealPlan(mealPlanDto), HttpStatus.OK);
     }
-    @PatchMapping("/update/{id}")
-    public ResponseEntity<MealPlanModel> partialUpdate(@PathVariable Long id,@RequestBody MealPlanDto mealPlanDto){
-        MealPlanModel updatedMeal = mealPlanService.partialUpdate(id,mealPlanDto);
+    @PatchMapping("/update/{customerId}/{weekNumber}/{dayName}/{mealType}")
+    public ResponseEntity<MealPlanModel> partialUpdate(@RequestBody MealPlanDto mealPlanDto, @PathVariable Long customerId,
+                                                       @PathVariable String weekNumber,
+                                                       @PathVariable String dayName,
+                                                       @PathVariable String mealType){
+        MealPlanModel updatedMeal = mealPlanService.partialUpdate(mealPlanDto, customerId, weekNumber,dayName, mealType);
         return ResponseEntity.ok(updatedMeal);
     }
-    @GetMapping("/getAnalytics")
+    @GetMapping("/overallAnalytics")
     public Map<String, Integer> getOverallAnalytics(){
         return mealPlanService.getOverallAnalytics();
+    }
+    @GetMapping("/weeklyAnalytics/{week}")
+    public Map<String, Integer> getWeeklyAnalytics(@PathVariable String week){
+        return mealPlanService.getWeeklyAnalytics(week);
+    }
+    @GetMapping("/dailyAnalytics/{day}")
+    public Map<String, Integer> getDailyAnalytics(@PathVariable String day){
+        return mealPlanService.getDailyAnalytics(day);
     }
     @GetMapping("/getIngredients")
     public List<String> getIngredientList(){
