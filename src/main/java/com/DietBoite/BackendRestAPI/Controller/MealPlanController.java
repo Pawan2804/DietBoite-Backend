@@ -26,12 +26,12 @@ public class MealPlanController {
     public ResponseEntity<MealPlanModel> createCustomer(@RequestBody MealPlanDto mealPlanDto){
         return new ResponseEntity<>(mealPlanService.createMealPlan(mealPlanDto), HttpStatus.OK);
     }
-    @PatchMapping("/update/{customerId}/{weekNumber}/{dayName}/{mealType}")
-    public ResponseEntity<MealPlanModel> partialUpdate(@RequestBody MealPlanDto mealPlanDto, @PathVariable Long customerId,
+    @PatchMapping("/update/{customerName}/{weekNumber}/{dayName}/{mealType}")
+    public ResponseEntity<MealPlanModel> partialUpdate(@RequestBody MealPlanDto mealPlanDto, @PathVariable String customerName,
                                                        @PathVariable String weekNumber,
                                                        @PathVariable String dayName,
                                                        @PathVariable String mealType){
-        MealPlanModel updatedMeal = mealPlanService.partialUpdate(mealPlanDto, customerId, weekNumber,dayName, mealType);
+        MealPlanModel updatedMeal = mealPlanService.partialUpdate(mealPlanDto, customerName, weekNumber,dayName, mealType);
         return ResponseEntity.ok(updatedMeal);
     }
     @GetMapping("/overallAnalytics")
@@ -49,6 +49,13 @@ public class MealPlanController {
     @GetMapping("/getIngredients")
     public List<String> getIngredientList(){
         return mealPlanService.getIngredientsList();
+    }
+    @GetMapping("/getByCustomerPlan/{customerName}/{week}/{day}/{mealType}")
+    public MealPlanModel getByCustomerPlan(@PathVariable String customerName,
+                                    @PathVariable String week,
+                                    @PathVariable String day,
+                                    @PathVariable String mealType){
+        return mealPlanService.getByCustomerPlan(customerName,week,day,mealType);
     }
 
 

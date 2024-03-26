@@ -43,12 +43,11 @@ public class MealPlanServiceImpl implements MealPlanService {
     }
 
     @Override
-    public MealPlanModel partialUpdate(MealPlanDto mealPlanDto, Long customerId, String week,String day, String mealType) {
+    public MealPlanModel partialUpdate(MealPlanDto mealPlanDto, String customerName, String week,String day, String mealType) {
+        CustomerModel customer = customerRepo.findByuserName(customerName);
         MealPlanModel existingMealPlan = mealPlanRepo.findByCustomerPlan(
-                customerId, week, day, mealType);
-        MealPlanModel meal = mealPlanRepo.findByCustomerPlan(customerId,week, day,mealType);
-//        MealPlanModel meal = mealPlanRepo.findByCustomerPlan(1L,'Week4', 'Friday','Lunch');
-        System.out.println("ingredients"+meal.getIngredients());
+                customer.getCustomerId(), week, day, mealType);
+        MealPlanModel meal = mealPlanRepo.findByCustomerPlan(customer.getCustomerId(),week, day,mealType);
         if (mealPlanDto.getIngredients() != null) {
             meal.setIngredients(mealPlanDto.getIngredients());
         }
@@ -78,9 +77,15 @@ public class MealPlanServiceImpl implements MealPlanService {
 
 
     public List<String> getIngredientsList() {
-        List<String> meals = mealPlanRepo.findIngredients();
-        return meals;
+        return  mealPlanRepo.findIngredients();
     }
+
+    @Override
+    public MealPlanModel getByCustomerPlan(String customerName, String week, String day, String mealType) {
+        CustomerModel customer = customerRepo.findByuserName(customerName);
+        return mealPlanRepo.findByCustomerPlan(customer.getCustomerId(),week,day,mealType);
+    }
+
     private Map<String, Integer> calculateTotalQuantity(List<String> itemList) {
         Map<String, Integer> totalQuantityMap = new HashMap<>();
 
